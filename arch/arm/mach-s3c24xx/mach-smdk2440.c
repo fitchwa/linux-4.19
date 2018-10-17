@@ -40,6 +40,8 @@
 #include "common.h"
 #include "common-smdk.h"
 
+extern void early_print(const char *str, ...);
+
 static struct map_desc smdk2440_iodesc[] __initdata = {
 	/* ISA IO Space map (memory space selected by A24) */
 
@@ -152,6 +154,7 @@ static struct platform_device *smdk2440_devices[] __initdata = {
 
 static void __init smdk2440_map_io(void)
 {
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	s3c24xx_init_io(smdk2440_iodesc, ARRAY_SIZE(smdk2440_iodesc));
 	s3c24xx_init_uarts(smdk2440_uartcfgs, ARRAY_SIZE(smdk2440_uartcfgs));
 	samsung_set_timer_source(SAMSUNG_PWM3, SAMSUNG_PWM4);
@@ -159,22 +162,29 @@ static void __init smdk2440_map_io(void)
 
 static void __init smdk2440_init_time(void)
 {
-	s3c2440_init_clocks(16934400);
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+	s3c2440_init_clocks(12000000);
 	samsung_timer_init();
 }
 
 static void __init smdk2440_machine_init(void)
 {
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	s3c24xx_fb_set_platdata(&smdk2440_fb_info);
 	s3c_i2c0_set_platdata(NULL);
 
 	platform_add_devices(smdk2440_devices, ARRAY_SIZE(smdk2440_devices));
 	smdk_machine_init();
 }
+static const char *const smdk2440_dt_compat[] __initconst = {
+    "samsung,smdk2440",
+    NULL
+};
 
 MACHINE_START(S3C2440, "SMDK2440")
 	/* Maintainer: Ben Dooks <ben-linux@fluff.org> */
 	.atag_offset	= 0x100,
+	.dt_compat      = smdk2440_dt_compat,
 
 	.init_irq	= s3c2440_init_irq,
 	.map_io		= smdk2440_map_io,

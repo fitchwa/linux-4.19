@@ -27,6 +27,7 @@
 #include <plat/devs.h>
 
 static struct cpu_table *cpu;
+extern void early_print(const char *str, ...);
 
 static struct cpu_table * __init s3c_lookup_cpu(unsigned long idcode,
 						struct cpu_table *tab,
@@ -147,12 +148,15 @@ static int __init s3c_arch_init(void)
 {
 	int ret;
 
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+
 	/* init is only needed for ATAGS based platforms */
 	if (!IS_ENABLED(CONFIG_ATAGS) ||
 	    (!soc_is_s3c24xx() && !soc_is_s3c64xx()))
 		return 0;
 
 	// do the correct init for cpu
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 
 	if (cpu == NULL) {
 		/* Not needed when booting with device tree. */
@@ -162,9 +166,11 @@ static int __init s3c_arch_init(void)
 	}
 
 	ret = (cpu->init)();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	if (ret != 0)
 		return ret;
 #if IS_ENABLED(CONFIG_SAMSUNG_ATAGS)
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	ret = platform_add_devices(s3c24xx_uart_devs, nr_uarts);
 #endif
 	return ret;

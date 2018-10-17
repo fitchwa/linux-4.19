@@ -1172,8 +1172,8 @@ static __init int samsung_gpiolib_init(void)
 	 * pinctrl-samsung driver is used, providing both GPIO and pin control
 	 * interfaces. For legacy (non-DT) platforms this driver is used.
 	 */
-	if (of_have_populated_dt())
-		return 0;
+	//if (of_have_populated_dt())
+	//	return 0;
 
 	if (soc_is_s3c24xx()) {
 		samsung_gpiolib_set_cfg(samsung_gpio_cfgs,

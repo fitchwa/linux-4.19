@@ -1067,8 +1067,14 @@ void __init setup_arch(char **cmdline_p)
 
 	setup_processor();
 	mdesc = setup_machine_fdt(__atags_pointer);
-	if (!mdesc)
+	if (!mdesc) {
+		early_print("\nError: invalid dtb, try ATAGs\n");
 		mdesc = setup_machine_tags(__atags_pointer, __machine_arch_type);
+	}
+	else {
+		early_print("Get mdesc from dtb!\n");
+	}
+	
 	if (!mdesc) {
 		early_print("\nError: invalid dtb and unrecognized/unsupported machine ID\n");
 		early_print("  r1=0x%08x, r2=0x%08x\n", __machine_arch_type,

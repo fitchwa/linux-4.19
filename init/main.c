@@ -528,10 +528,14 @@ static void __init mm_init(void)
 	pti_init();
 }
 
+extern void early_print(const char *str, ...);
+
 asmlinkage __visible void __init start_kernel(void)
 {
 	char *command_line;
 	char *after_dashes;
+
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 
 	set_task_stack_end_magic(&init_task);
 	smp_setup_processor_id();
@@ -549,7 +553,10 @@ asmlinkage __visible void __init start_kernel(void)
 	boot_cpu_init();
 	page_address_init();
 	pr_notice("%s", linux_banner);
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	setup_arch(&command_line);
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+	early_print("command line : %s\n", command_line);
 	/*
 	 * Set up the the initial canary and entropy after arch
 	 * and after adding latent and command line entropy.
