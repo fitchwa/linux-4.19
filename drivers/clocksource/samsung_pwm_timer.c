@@ -24,6 +24,7 @@
 #include <linux/sched_clock.h>
 
 #include <clocksource/samsung_pwm.h>
+extern void early_print(const char *str, ...);
 
 
 /*
@@ -385,6 +386,7 @@ static int __init _samsung_pwm_clocksource_init(void)
 	mask = ~pwm.variant.output_mask & ((1 << SAMSUNG_PWM_NUM) - 1);
 	channel = fls(mask) - 1;
 	if (channel < 0) {
+		early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 		pr_crit("failed to find PWM channel for clocksource\n");
 		return -EINVAL;
 	}
@@ -393,6 +395,7 @@ static int __init _samsung_pwm_clocksource_init(void)
 	mask &= ~(1 << channel);
 	channel = fls(mask) - 1;
 	if (channel < 0) {
+		early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 		pr_crit("failed to find PWM channel for clock event\n");
 		return -EINVAL;
 	}
@@ -419,6 +422,8 @@ void __init samsung_pwm_clocksource_init(void __iomem *base,
 }
 
 #ifdef CONFIG_TIMER_OF
+
+
 static int __init samsung_pwm_alloc(struct device_node *np,
 				    const struct samsung_pwm_variant *variant)
 {
@@ -428,10 +433,14 @@ static int __init samsung_pwm_alloc(struct device_node *np,
 	int i;
 
 	memcpy(&pwm.variant, variant, sizeof(pwm.variant));
-	for (i = 0; i < SAMSUNG_PWM_NUM; ++i)
+	for (i = 0; i < SAMSUNG_PWM_NUM; ++i) {
 		pwm.irq[i] = irq_of_parse_and_map(np, i);
+		early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+		early_print("pwm.irq[%d] = %d\n", i, pwm.irq[i]);
+	}
 
 	of_property_for_each_u32(np, "samsung,pwm-outputs", prop, cur, val) {
+		early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 		if (val >= SAMSUNG_PWM_NUM) {
 			pr_warning("%s: invalid channel index in samsung,pwm-outputs property\n",
 								__func__);
@@ -442,12 +451,14 @@ static int __init samsung_pwm_alloc(struct device_node *np,
 
 	pwm.base = of_iomap(np, 0);
 	if (!pwm.base) {
+		early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 		pr_err("%s: failed to map PWM registers\n", __func__);
 		return -ENXIO;
 	}
 
 	pwm.timerclk = of_clk_get_by_name(np, "timers");
 	if (IS_ERR(pwm.timerclk)) {
+		early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 		pr_crit("failed to get timers clock for timer\n");
 		return PTR_ERR(pwm.timerclk);
 	}

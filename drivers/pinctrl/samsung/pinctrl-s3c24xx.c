@@ -394,10 +394,10 @@ static void s3c24xx_demux_eint8_23(struct irq_desc *desc)
 }
 
 static irq_flow_handler_t s3c2410_eint_handlers[NUM_EINT_IRQ] = {
-	s3c2410_demux_eint0_3,
-	s3c2410_demux_eint0_3,
-	s3c2410_demux_eint0_3,
-	s3c2410_demux_eint0_3,
+	NULL, //s3c2410_demux_eint0_3,  /* add by weidongshan@qq.com */
+	NULL, //s3c2410_demux_eint0_3,
+	NULL, //s3c2410_demux_eint0_3,
+	NULL, //s3c2410_demux_eint0_3,
 	s3c24xx_demux_eint4_7,
 	s3c24xx_demux_eint8_23,
 };
@@ -500,14 +500,18 @@ static int s3c24xx_eint_init(struct samsung_pinctrl_drv_data *d)
 	for (i = 0; i < NUM_EINT_IRQ; ++i) {
 		unsigned int irq;
 
-		irq = irq_of_parse_and_map(eint_np, i);
-		if (!irq) {
-			dev_err(dev, "failed to get wakeup EINT IRQ %d\n", i);
-			return -ENXIO;
-		}
+		if (handlers[i]) /* add by weidongshan@qq.com */
+		{
+			irq = irq_of_parse_and_map(eint_np, i);
+			if (!irq) {
+				dev_err(dev, "failed to get wakeup EINT IRQ %d\n", i);
+				return -ENXIO;
+			}
+			printk("s3c24xx_eint_init irq_of_parse_and_map(eint_np, %d) = %d\n", i, irq);
 
-		eint_data->parents[i] = irq;
-		irq_set_chained_handler_and_data(irq, handlers[i], eint_data);
+			eint_data->parents[i] = irq;
+			irq_set_chained_handler_and_data(irq, handlers[i], eint_data);
+		}
 	}
 
 	bank = d->pin_banks;

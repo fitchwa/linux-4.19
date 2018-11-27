@@ -1213,6 +1213,7 @@ bool __init early_init_dt_verify(void *params)
 
 	/* Setup flat device-tree pointer */
 	initial_boot_params = params;
+        printk("early_init_dt_verify initial_boot_params = 0x%x\n", initial_boot_params);
 	of_fdt_crc32 = crc32_be(~0, initial_boot_params,
 				fdt_totalsize(initial_boot_params));
 	return true;
@@ -1299,6 +1300,7 @@ static ssize_t of_fdt_raw_read(struct file *filp, struct kobject *kobj,
 			       struct bin_attribute *bin_attr,
 			       char *buf, loff_t off, size_t count)
 {
+	printk("initial_boot_params = 0x%x\n", initial_boot_params);
 	memcpy(buf, initial_boot_params + off, count);
 	return count;
 }
