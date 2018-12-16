@@ -1730,7 +1730,7 @@ int __init dm9000c_init(void)
 	unsigned long val;
 
 	iobase = (int)ioremap(0x20000000, 1024);  /* thisway.diy@163.com */
-	irq    = IRQ_EINT7;                  /* thisway.diy@163.com */
+	irq    = 7; //IRQ_EINT7;                  /* thisway.diy@163.com */
 
 
 

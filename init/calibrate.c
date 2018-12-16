@@ -31,6 +31,7 @@ __setup("lpj=", lpj_setup);
  */
 #define DELAY_CALIBRATION_TICKS			((HZ < 100) ? 1 : (HZ/100))
 #define MAX_DIRECT_CALIBRATION_RETRIES		5
+extern void early_print(const char *str, ...);
 
 static unsigned long calibrate_delay_direct(void)
 {
@@ -44,6 +45,7 @@ static unsigned long calibrate_delay_direct(void)
 	int max = -1; /* index of measured_times with max/min values or not set */
 	int min = -1;
 	int i;
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 
 	if (read_current_timer(&pre_start) < 0 )
 		return 0;
@@ -279,29 +281,36 @@ void calibrate_delay(void)
 	int this_cpu = smp_processor_id();
 
 	if (per_cpu(cpu_loops_per_jiffy, this_cpu)) {
+		early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 		lpj = per_cpu(cpu_loops_per_jiffy, this_cpu);
 		if (!printed)
 			pr_info("Calibrating delay loop (skipped) "
 				"already calibrated this CPU");
 	} else if (preset_lpj) {
+		early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 		lpj = preset_lpj;
 		if (!printed)
 			pr_info("Calibrating delay loop (skipped) "
 				"preset value.. ");
 	} else if ((!printed) && lpj_fine) {
+		early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 		lpj = lpj_fine;
 		pr_info("Calibrating delay loop (skipped), "
 			"value calculated using timer frequency.. ");
 	} else if ((lpj = calibrate_delay_is_known())) {
+		early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 		;
 	} else if ((lpj = calibrate_delay_direct()) != 0) {
+		early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 		if (!printed)
 			pr_info("Calibrating delay using timer "
 				"specific routine.. ");
 	} else {
+		early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 		if (!printed)
 			pr_info("Calibrating delay loop... ");
 		lpj = calibrate_delay_converge();
+		early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	}
 	per_cpu(cpu_loops_per_jiffy, this_cpu) = lpj;
 	if (!printed)

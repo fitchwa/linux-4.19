@@ -648,29 +648,41 @@ asmlinkage __visible void __init start_kernel(void)
 	hrtimers_init();
 	softirq_init();
 	timekeeping_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	time_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	printk_safe_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	perf_event_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	profile_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	call_function_init();
 	WARN(!irqs_disabled(), "Interrupts were enabled early\n");
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 
 	early_boot_irqs_disabled = false;
 	local_irq_enable();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 
 	kmem_cache_init_late();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 
 	/*
 	 * HACK ALERT! This is early. We're enabling the console before
 	 * we've done PCI setups etc, and console_init() must be aware of
 	 * this. But we do want output early, in case something goes wrong.
 	 */
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	console_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	if (panic_later)
 		panic("Too many boot %s vars at `%s'", panic_later,
 		      panic_param);
 
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	lockdep_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 
 	/*
 	 * Need to run this when irqs are enabled, because it wants
@@ -678,6 +690,7 @@ asmlinkage __visible void __init start_kernel(void)
 	 * too:
 	 */
 	locking_selftest();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 
 	/*
 	 * This needs to be called before any devices perform DMA
@@ -686,6 +699,7 @@ asmlinkage __visible void __init start_kernel(void)
 	 * not cause "plain-text" data to be decrypted when accessed.
 	 */
 	mem_encrypt_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 
 #ifdef CONFIG_BLK_DEV_INITRD
 	if (initrd_start && !initrd_below_start_ok &&
@@ -696,41 +710,66 @@ asmlinkage __visible void __init start_kernel(void)
 		initrd_start = 0;
 	}
 #endif
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	page_ext_init();
 	kmemleak_init();
 	debug_objects_mem_init();
 	setup_per_cpu_pageset();
 	numa_policy_init();
 	acpi_early_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	if (late_time_init)
 		late_time_init();
 	sched_clock_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	calibrate_delay();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	pid_idr_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	anon_vma_init();
 #ifdef CONFIG_X86
 	if (efi_enabled(EFI_RUNTIME_SERVICES))
 		efi_enter_virtual_mode();
 #endif
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	thread_stack_cache_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	cred_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	fork_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	proc_caches_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	uts_ns_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	buffer_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	key_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	security_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	dbg_late_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	vfs_caches_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	pagecache_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	signals_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	seq_file_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	proc_root_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	nsfs_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	cpuset_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	cgroup_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	taskstats_init_early();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	delayacct_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 
 	check_bugs();
 
@@ -742,8 +781,10 @@ asmlinkage __visible void __init start_kernel(void)
 		efi_free_boot_services();
 	}
 
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	/* Do the rest non-__init'ed, we're now alive */
 	rest_init();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 }
 
 /* Call all constructor functions linked into the kernel. */
@@ -1148,14 +1189,18 @@ static noinline void __init kernel_init_freeable(void)
 
 	page_alloc_init_late();
 
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	do_basic_setup();
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 
 	/* Open the /dev/console on the rootfs, this should never fail */
 	if (ksys_open((const char __user *) "/dev/console", O_RDWR, 0) < 0)
 		pr_err("Warning: unable to open an initial console.\n");
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 
 	(void) ksys_dup(0);
 	(void) ksys_dup(0);
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	/*
 	 * check if there is an early userspace init.  If yes, let it do all
 	 * the work
@@ -1164,11 +1209,13 @@ static noinline void __init kernel_init_freeable(void)
 	if (!ramdisk_execute_command)
 		ramdisk_execute_command = "/init";
 
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	if (ksys_access((const char __user *)
 			ramdisk_execute_command, 0) != 0) {
 		ramdisk_execute_command = NULL;
 		prepare_namespace();
 	}
+	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 
 	/*
 	 * Ok, we have completed the initial bootup, and

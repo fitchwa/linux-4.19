@@ -37,6 +37,7 @@
 #include <plat/devs.h>
 #include <plat/cpu.h>
 #include <plat/samsung-time.h>
+#include <plat/pm.h>
 
 #include "common.h"
 #include "common-smdk.h"
@@ -157,25 +158,29 @@ static void __init smdk2440_map_io(void)
 {
 	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	s3c24xx_init_io(smdk2440_iodesc, ARRAY_SIZE(smdk2440_iodesc));
-	s3c24xx_init_uarts(smdk2440_uartcfgs, ARRAY_SIZE(smdk2440_uartcfgs));
-	samsung_set_timer_source(SAMSUNG_PWM3, SAMSUNG_PWM4);
+	//s3c24xx_init_uarts(smdk2440_uartcfgs, ARRAY_SIZE(smdk2440_uartcfgs));
+	//samsung_set_timer_source(SAMSUNG_PWM3, SAMSUNG_PWM4);
 }
 
 static void __init smdk2440_init_time(void)
 {
 	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
 	s3c2440_init_clocks(12000000);
-	samsung_timer_init();
+	//samsung_timer_init();
 }
 
 static void __init smdk2440_machine_init(void)
 {
 	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
+	s3c_pm_init();
+
+#if 0
 	s3c24xx_fb_set_platdata(&smdk2440_fb_info);
 	s3c_i2c0_set_platdata(NULL);
 
 	platform_add_devices(smdk2440_devices, ARRAY_SIZE(smdk2440_devices));
 	smdk_machine_init();
+#endif	
 }
 static const char *const smdk2440_dt_compat[] __initconst = {
     "samsung,smdk2440",
@@ -187,8 +192,8 @@ MACHINE_START(S3C2440, "SMDK2440")
 	.atag_offset	= 0x100,
 	.dt_compat      = smdk2440_dt_compat,
 
-	.init_irq	= s3c2440_init_irq,
+	//.init_irq	= s3c2440_init_irq,
 	.map_io		= smdk2440_map_io,
 	.init_machine	= smdk2440_machine_init,
-	.init_time	= smdk2440_init_time,
+	//.init_time	= smdk2440_init_time,
 MACHINE_END

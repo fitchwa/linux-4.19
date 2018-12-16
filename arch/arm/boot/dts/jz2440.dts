@@ -32,6 +32,15 @@
 		bootargs = "noinitrd root=/dev/nfs rw nfsroot=192.168.1.104:/home/fitch/nfs_root/root_fs/jz2440_fs ip=192.168.1.115:192.168.1.104:192.168.1.1:255.255.255.0::eth0:off init=/linuxrc console=ttySAC0,115200";
 	};
 
+	// add for led
+	led {
+		compatible = "jz2440-led";
+		pin-num = <0xf6>;
+		pinctrl-names = "mode_on", "mode_off";
+		pinctrl-0 = <&led_on>;
+		pinctrl-1 = <&led_off>;
+	};
+
 	srom-cs4@20000000 {
 		compatible = "simple-bus";
 		#address-cells = <1>;
@@ -148,6 +157,22 @@
 	};
 };
 
+/* led pinctrl start */ 
+&pinctrl_0 {
+	led_on: led_on {
+		samsung,pins = "gpf-6";                            // pin number
+		samsung,pin-function = <EXYNOS_PIN_FUNC_OUTPUT>;   // output
+		samsung,pin-val = <0x1>;                           // output one
+	};
+
+	led_off: led_off {
+		samsung,pins = "gpf-6";                            // pin number
+		samsung,pin-function = <EXYNOS_PIN_FUNC_OUTPUT>;   // output
+		samsung,pin-val = <0x0>;                           // output zero
+	};
+};
+/* led pinctrl end */
+
 &watchdog {
 	status = "okay";
 };
@@ -208,13 +233,13 @@
 
 		partition@80000 {
 			label = "kernel";
-			reg = <0x80000 0x400000>;
+			reg = <0x80000 0x1000000>;
 			read-only;
 		};
 
 		partition@480000 {
 			label = "rootfs";
-			reg = <0x480000 0>;
+			reg = <0x1080000 0>;
 		};
 	};
 };

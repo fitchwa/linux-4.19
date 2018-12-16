@@ -171,7 +171,7 @@ static int __init s3c_arch_init(void)
 		return ret;
 #if IS_ENABLED(CONFIG_SAMSUNG_ATAGS)
 	early_print("%s %s %d\n", __FILE__, __FUNCTION__, __LINE__);
-	ret = platform_add_devices(s3c24xx_uart_devs, nr_uarts);
+	//ret = platform_add_devices(s3c24xx_uart_devs, nr_uarts);
 #endif
 	return ret;
 }

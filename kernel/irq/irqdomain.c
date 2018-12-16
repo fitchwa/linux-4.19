@@ -663,6 +663,7 @@ unsigned int irq_create_mapping(struct irq_domain *domain,
 		pr_debug("-> virq allocation failed\n");
 		return 0;
 	}
+        printk("irq_create_mapping, domain's name = %s, virq = %d, hwirq = %d\n", domain->name, virq, hwirq);
 
 	if (irq_domain_associate(domain, virq, hwirq)) {
 		irq_free_desc(virq);
