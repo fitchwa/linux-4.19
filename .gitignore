@@ -135,3 +135,4 @@ all.config
 
 # add .config to list!
 !/.config
+*tags
