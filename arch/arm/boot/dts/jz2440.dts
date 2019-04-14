@@ -35,10 +35,13 @@
 	// add for led
 	led {
 		compatible = "jz2440-led";
-		pin-num = <0xf6>;
-		pinctrl-names = "mode_on", "mode_off";
-		pinctrl-0 = <&led_on>;
-		pinctrl-1 = <&led_off>;
+		pinctrl-names = "led1_on", "led1_off", "led2_on", "led2_off", "led3_on", "led3_off";
+		pinctrl-0 = <&led1_on>;
+		pinctrl-1 = <&led1_off>;
+		pinctrl-2 = <&led2_on>;
+		pinctrl-3 = <&led2_off>;
+		pinctrl-4 = <&led3_on>;
+		pinctrl-5 = <&led3_off>;
 	};
 
 	srom-cs4@20000000 {
@@ -159,14 +162,33 @@
 
 /* led pinctrl start */ 
 &pinctrl_0 {
-	led_on: led_on {
+	led1_on: led1_on {
 		samsung,pins = "gpf-6";                            // pin number
 		samsung,pin-function = <EXYNOS_PIN_FUNC_OUTPUT>;   // output
 		samsung,pin-val = <0x1>;                           // output one
 	};
-
-	led_off: led_off {
+	led1_off: led1_off {
 		samsung,pins = "gpf-6";                            // pin number
+		samsung,pin-function = <EXYNOS_PIN_FUNC_OUTPUT>;   // output
+		samsung,pin-val = <0x0>;                           // output zero
+	};
+	led2_on: led2_on {
+		samsung,pins = "gpf-5";                            // pin number
+		samsung,pin-function = <EXYNOS_PIN_FUNC_OUTPUT>;   // output
+		samsung,pin-val = <0x1>;                           // output one
+	};
+	led2_off: led2_off {
+		samsung,pins = "gpf-5";                            // pin number
+		samsung,pin-function = <EXYNOS_PIN_FUNC_OUTPUT>;   // output
+		samsung,pin-val = <0x0>;                           // output zero
+	};
+	led3_on: led3_on {
+		samsung,pins = "gpf-4";                            // pin number
+		samsung,pin-function = <EXYNOS_PIN_FUNC_OUTPUT>;   // output
+		samsung,pin-val = <0x1>;                           // output one
+	};
+	led3_off: led3_off {
+		samsung,pins = "gpf-4";                            // pin number
 		samsung,pin-function = <EXYNOS_PIN_FUNC_OUTPUT>;   // output
 		samsung,pin-val = <0x0>;                           // output zero
 	};
