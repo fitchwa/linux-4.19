@@ -237,7 +237,7 @@
 			read-only;
 		};
 
-		partition@480000 {
+		partition@1080000 {
 			label = "rootfs";
 			reg = <0x1080000 0>;
 		};
