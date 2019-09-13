@@ -1,0 +1,12 @@
+menu "board jz2440 support"
+
+config LEDS_JZ2440
+	tristate "LED Support for 100ask jz2440 GPIO LEDs"
+	depends on LEDS_CLASS
+	depends on ARCH_S3C24XX
+	help
+	  This option enables support for LEDs connected to GPIO lines
+	  on 100ask jz2440 series CPUs, such as the S3C2410 and S3C2440.
+
+
+endmenu
