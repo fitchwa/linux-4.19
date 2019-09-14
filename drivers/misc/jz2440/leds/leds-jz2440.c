@@ -158,7 +158,7 @@ static struct s3c24xx_gpio_led jz2440_leds[LED_NUM] = {
 		},
 };
 
-static int s3c24xx_led_probe(struct platform_device *dev)
+static int jz2440_led_probe(struct platform_device *dev)
 {
 	int ret;
 	int i;
@@ -195,22 +195,22 @@ static int s3c24xx_led_probe(struct platform_device *dev)
 	return ret;
 }
 
-static struct of_device_id s3c24xx_led_ids[] = {
+static struct of_device_id jz2440_led_ids[] = {
 	{.compatible = "jz2440-led"},
 	{},
 };
 
-static struct platform_driver s3c24xx_led_driver = {
-	.probe		= s3c24xx_led_probe,
+static struct platform_driver jz2440_led_driver = {
+	.probe		= jz2440_led_probe,
 	.driver		= {
-		.name		= "s3c24xx_led",
+		.name		= "jz2440_led",
 #if CONFIG_OF
-		.of_match_table = s3c24xx_led_ids,
+		.of_match_table = jz2440_led_ids,
 #endif
 	},
 };
 
-module_platform_driver(s3c24xx_led_driver);
+module_platform_driver(jz2440_led_driver);
 
 MODULE_AUTHOR("fitch <fitchwa@163.com>");
 MODULE_DESCRIPTION("JZ2440 LED driver");
