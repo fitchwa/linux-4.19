@@ -44,6 +44,18 @@
 		pinctrl-5 = <&led3_off>;
 	};
 
+    // add for buttons
+    button {
+        compatible = "jz2440-button";
+        eint-pins = <&gpf 0 0>, <&gpf 2 0>, <&gpg 3 0>, <&gpg 11 0>;
+        interrupts-extended = <&intc 0 0 0 IRQ_TYPE_EDGE_FALLING>,
+                              <&intc 0 0 2 IRQ_TYPE_EDGE_FALLING>,
+                              <&gpg 3 IRQ_TYPE_EDGE_FALLING>,
+                              <&gpg 11 IRQ_TYPE_EDGE_FALLING>;
+        pinctrl-names = "gpio_as_button";
+        pinctrl-0 = <&gpio_as_button>;
+    };
+
 	srom-cs4@20000000 {
 		compatible = "simple-bus";
 		#address-cells = <1>;
@@ -194,6 +206,15 @@
 	};
 };
 /* led pinctrl end */
+
+/* button pinctrl start */
+&pinctrl_0 {
+    gpio_as_button: buttons {
+		samsung,pins = "gpf-0", "gpf-2", "gpg-3", "gpg-11";// pin number
+		samsung,pin-function = <EXYNOS_PIN_FUNC_EINT>;     // eint
+    };
+};
+/* button pinctrl end */
 
 &watchdog {
 	status = "okay";
